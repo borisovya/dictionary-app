@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100vh;
+  width: 100%;
+  background: #dcdcdc;
+  margin: 0 auto;
+}
+
+
+.header-container {
+  background-color: #00a3ff;
+  color: white;
+  width: 90%;
+  height: 10vh;
+  margin: 10px auto; /* Убрано значение 0 для верхнего отступа */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.container {
+  background-color: lightpink;
+  width: 90%;
+
+  margin: 10px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-radius: 5px;
+}
+
+.input-container {
+  flex: 3;
+  height: 30vh;
+  min-width: 200px;
+  background-color: lightgrey;
+}
+
+.items-container {
+  flex: 8;
+  min-width: 200px;
+  height: 40vh;
+  background-color: grey;
+  margin-left: 10px;
+}
+
+.header-title {
+  padding: 40px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.star {
+  margin-right: 5px;
+}
+
+.header-link {
+  text-decoration: none;
+  color: white
+}
+
+.search-input {
+  margin: 10px auto 0;
+  display: flex;
+  width: 80%;
+  height: 40px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #00a3ff;
+  outline: none;
+  background-color: #fff;
+  background-image: url('../asseds/magnifyingGlass.png');
+  background-position: right 15px center;; /* Выравнивание иконки по центру по вертикали и справа по горизонтали */
+  background-repeat: no-repeat;
+  background-size: 20px 20px; /* Установите размеры иконки, чтобы она не была слишком большой */
+  padding-right: 30px; /* Добавление дополнительного отступа справа, чтобы иконка не перекрывала текст в инпуте */
+}
+
+.search-input::placeholder {
+  color: #999; /* Цвет текста внутри инпута */
+}
+
+
