@@ -1,11 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {addToFavorites, removeFromFavorites, searchFromFavorites} from '../store/reducer/favoritesSlice';
+import {
+  addToFavorites,
+  removeFromFavorites,
+  searchFromFavorites,
+  toggleAdjective,
+  toggleNoun,
+  toggleVerb
+} from '../store/reducer/favoritesSlice';
 
 const StarredWords = () => {
   const [word, setWord] = useState<string>('');
   const favorites = useAppSelector(state => state.favorites.data);
   const filtered = useAppSelector(state => state.favorites.filteredData);
+  const isAdjectiveChecked = useAppSelector((state) => state.favorites.isAdjectiveChecked);
+  const isNounChecked = useAppSelector((state) => state.favorites.isNounChecked);
+  const isVerbChecked = useAppSelector((state) => state.favorites.isVerbChecked);
   const ids = useAppSelector(state => state.favorites.ids);
   const dispatch = useAppDispatch();
 
@@ -19,18 +29,34 @@ const StarredWords = () => {
 
   useEffect(() => {
     if (word) {
-      dispatch(searchFromFavorites(word))
+      dispatch(searchFromFavorites(word));
     }
   }, [word]);
 
-  if(word && filtered) {
+  if (word && filtered) {
     return (
       <div className="container">
-        <div className="input-container">
+        <div className="input-container-starred">
           <input type="text"
                  className="search-input"
                  placeholder="Поиск"
                  onChange={e => setWord(e.currentTarget.value)}/>
+
+          <div className="checkboxBlock">
+            <label>
+              <input type="checkbox" checked={isAdjectiveChecked} onChange={()=>dispatch(toggleAdjective())}/>
+              adjective
+            </label>
+            <label>
+              <input type="checkbox" checked={isNounChecked} onChange={()=>dispatch(toggleNoun())}/>
+              noun
+            </label>
+            <label>
+              <input type="checkbox" checked={isVerbChecked} onChange={()=>toggleVerb}/>
+              verb
+            </label>
+          </div>
+
         </div>
 
         <div className="items-container">
@@ -58,11 +84,27 @@ const StarredWords = () => {
 
   return (
     <div className="container">
-      <div className="input-container">
+      <div className="input-container-starred">
         <input type="text"
                className="search-input"
                placeholder="Поиск"
                onChange={e => setWord(e.currentTarget.value)}/>
+
+        <div className="checkboxBlock">
+          <label>
+            <input type="checkbox" checked={isAdjectiveChecked} onChange={()=>dispatch(toggleAdjective())}/>
+            adjective
+          </label>
+          <label>
+            <input type="checkbox" checked={isNounChecked} onChange={()=>dispatch(toggleNoun())}/>
+            noun
+          </label>
+          <label>
+            <input type="checkbox" checked={isVerbChecked} onChange={()=>toggleVerb}/>
+            verb
+          </label>
+        </div>
+
       </div>
 
       <div className="items-container">

@@ -24,7 +24,6 @@ const Home = () => {
         try {
           const response = await wordsService.getWords(word);
           setItems(response);
-          console.log(response);
         }
         catch (error) {
           console.error(error);
@@ -41,54 +40,62 @@ const Home = () => {
 
   if (items && !items[0].hwi) {
     return (
-      <div className="container">
-        <div className="input-container">
-          <input type="text"
-                 className="search-input"
-                 placeholder="Поиск"
-                 onChange={e => setWord(e.currentTarget.value)}/>
+      <div className="container bg-amber-700 w-full mt-10 h-1/6 flex justify-between ">
+        <div className="bg-neutral-400 h-200 w-1/3 flex">
+          <div className="flex relative w-full mt-5 justify-center">
+            <input type="text"
+                   className="flex justify-center h-10 rounded w-3/4 p-2 pr-10"
+                   placeholder="Поиск"
+                   onChange={e => setWord(e.currentTarget.value)}/>
+          </div>
         </div>
 
-        <div className="items-container">
-          <div className="wordItem">
+        <div className="bg-gray-500 w-3/4 ml-15 flex-grow flex flex-col h-max">
+          <div className="flex bg-blue-50 h-10 mt-5 justify-between items-center ml-5 ">
             Поиск не дал результатов
           </div>
+          ;
+
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="container">
-      <div className="input-container">
-        <input type="text"
-               className="search-input"
-               placeholder="Поиск"
-               onChange={e => setWord(e.currentTarget.value)}/>
+    return (
+      <div className="container w-full mt-10 h-1/6 flex justify-between ">
+        <div className="bg-neutral-400 h-200 w-1/3 flex">
+          <div className="flex relative w-full mt-5 justify-center">
+            <input type="text"
+                   className="flex justify-center h-10 rounded w-3/4 p-2 pr-10"
+                   placeholder="Поиск"
+                   onChange={e => setWord(e.currentTarget.value)}/>
+          </div>
+        </div>
+
+        <div className=" w-3/4 ml-15 flex-grow flex flex-col h-max">
+
+          {items && items.length > 0 && items.map((i, index) => {
+
+            return <div className="flex bg-blue-50 h-10 mb-5 justify-between items-center ml-5 " key={index}>
+              <div className="flex font-bold w-1/6 ml-2">{i.hwi?.hw ?? '-'}</div>
+              <div className="flex italic w-1/6">{i.fl ?? '-'}</div>
+              <div className="flex w-4/6 truncate overflow-ellipsis mr-8">{i.shortdef ? i.shortdef[0] : '-'}</div>
+              <div className="flex w-1/10">
+                {!ids.includes(i.meta.id)
+                  ? <div className="flex ml-2 mr-4 cursor-pointer text-gray-400"
+                         onClick={() => onclickHandler(i)}>&#9733;</div>
+                  : <div className="flex ml-2 mr-4 cursor-pointer text-blue-400"
+                         onClick={() => onclickHandlerRemove(i)}>&#9733;</div>
+                }
+              </div>
+            </div>;
+          })
+          }
+
+        </div>
       </div>
+    );
+  }
+  ;
 
-      <div className="items-container">
-
-        {items && items.length > 0 && items.map((i, index) => {
-
-          return <div className="wordItem" key={index}>
-            <div className="wordInItem">{i.hwi?.hw ?? '-'}</div>
-            <div className="wordInItemType">{i.fl ?? '-'}</div>
-            <div className="wordMeaning">{i.shortdef ? i.shortdef[0] : '-'}</div>
-            <div className="starContainer">
-              {!ids.includes(i.meta.id)
-                ? <div className="starOutline" onClick={() => onclickHandler(i)}>&#9733;</div>
-                : <div className="starFilled" onClick={() => onclickHandlerRemove(i)}>&#9733;</div>
-              }
-            </div>
-          </div>;
-        })
-        }
-
-      </div>
-
-    </div>
-  );
-};
-
-export default Home;
+  export default Home;

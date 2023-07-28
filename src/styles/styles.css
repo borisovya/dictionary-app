@@ -1,157 +1,181 @@
-body {
-  margin: 0;
-  padding: 0;
-}
+/*body {*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*}*/
 
-.app {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 100vh;
-  width: 100%;
-  background: #dcdcdc;
-  margin: 0 auto;
-}
-
-
-.header-container {
-  background-color: #00a3ff;
-  color: white;
-  width: 90%;
-  height: 10vh;
-  margin: 10px auto; /* Убрано значение 0 для верхнего отступа */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 5px;
-}
-
-.container {
-  background-color: lightpink;
-  width: 90%;
-
-  margin: 10px auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-radius: 5px;
-}
-
-.input-container {
-  flex: 3;
-  height: 30vh;
-  min-width: 200px;
-  background-color: lightgrey;
-}
+/*.app {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  flex-wrap: wrap;*/
+/*  height: 100vh;*/
+/*  width: 100%;*/
+/*  background: #dcdcdc;*/
+/*  margin: 0 auto;*/
+/*}*/
 
 
+/*.header-container {*/
+/*  background-color: #00a3ff;*/
+/*  color: white;*/
+/*  width: 90%;*/
+/*  height: 10vh;*/
+/*  margin: 10px auto; !* Убрано значение 0 для верхнего отступа *!*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  align-items: center;*/
+/*  border-radius: 5px;*/
+/*}*/
 
-.header-title {
-  padding: 40px;
-  font-size: 18px;
-  font-weight: bold;
-}
+/*.container {*/
+/*  width: 90%;*/
+/*  margin: 10px auto;*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  align-items: flex-start;*/
+/*  border-radius: 5px;*/
+/*}*/
 
-.star {
-  margin-right: 5px;
-}
+/*.input-container {*/
+/*  flex: 3;*/
+/*  height: 30vh;*/
+/*  min-width: 200px;*/
+/*  background-color: lightgrey;*/
+/*}*/
 
-.header-link {
-  text-decoration: none;
-  color: white
-}
+/*.input-container-starred {*/
+/*  flex: 3;*/
+/*  height: 30vh;*/
+/*  min-width: 200px;*/
+/*  background-color: lightgrey;*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*}*/
 
-.activeLink {
-  text-decoration: underline;
-  color: #ff0000;
-}
+/*.checkboxBlock {*/
+/*  height: 40%;*/
+/*  padding: 10px;*/
+/*  margin-top: 15px;*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  align-items: flex-start;*/
+/*  justify-content: space-between;*/
+/*}*/
 
-.search-input {
-  margin: 10px auto 0;
-  display: flex;
-  width: 80%;
-  height: 40px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #00a3ff;
-  outline: none;
-  background-color: #fff;
-  background-image: url('../asseds/magnifyingGlass.png');
-  background-position: right 15px center;;
-  background-repeat: no-repeat;
-  background-size: 20px 20px;
-  padding-right: 30px;
-}
+/*.checkboxBlock input {*/
+/*  height: 20px;*/
+/*  width: 20px;*/
+/*}*/
+/*.checkboxBlock label {*/
+/* display: flex;*/
+/*  align-items: center;*/
+/*}*/
 
-.search-input::placeholder {
-  color: #999; /* Цвет текста внутри инпута */
-}
 
-.items-container {
-  display: flex;
-  flex-direction: column;
-  flex: 8;
-  min-width: 200px;
-  height: max-content;
-  background-color: lightgrey;
-  margin-left: 10px;
-}
+/*.header-title {*/
+/*  padding: 40px;*/
+/*  font-size: 18px;*/
+/*  font-weight: bold;*/
+/*}*/
 
-.wordItem {
-  height: 20px;
-  background-color: white;
-  padding: 10px;
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  justify-content: space-between;
-}
+/*.star {*/
+/*  margin-right: 5px;*/
+/*}*/
 
-.wordInItem {
-  font-weight: bold;
-}
+/*.header-link {*/
+/*  text-decoration: none;*/
+/*  color: white*/
+/*}*/
 
-.wordInItemType {
-  margin-left: 15px;
-  font-style: italic;
-}
+/*.activeLink {*/
+/*  text-decoration: underline;*/
+/*  color: #ff0000;*/
+/*}*/
 
-.wordMeaning {
-  margin-left: 15px;
-  width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+/*.search-input {*/
+/*  margin: 10px auto 0;*/
+/*  display: flex;*/
+/*  width: 80%;*/
+/*  height: 40px;*/
+/*  padding: 8px;*/
+/*  font-size: 16px;*/
+/*  border: 1px solid #00a3ff;*/
+/*  outline: none;*/
+/*  background-color: #fff;*/
+/*  background-image: url('../asseds/magnifyingGlass.png');*/
+/*  background-position: right 15px center;;*/
+/*  background-repeat: no-repeat;*/
+/*  background-size: 20px 20px;*/
+/*  padding-right: 30px;*/
+/*}*/
 
-.starContainer{
-  display: flex;
-  justify-content: flex-end;
-}
+/*.search-input::placeholder {*/
+/*  color: #999; !* Цвет текста внутри инпута *!*/
+/*}*/
 
-.starFilled {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-size: 1.5rem;
-  color: #00a3ff;
-}
+/*.items-container {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  flex: 8;*/
+/*  min-width: 200px;*/
+/*  height: max-content;*/
+/*  margin-left: 10px;*/
+/*}*/
 
-.starOutline {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-size: 1.5rem;
-  color: grey;
-}
+/*.wordItem {*/
+/*  height: 20px;*/
+/*  background-color: white;*/
+/*  padding: 10px;*/
+/*  margin-top: 10px;*/
+/*  display: flex;*/
+/*  flex-wrap: nowrap;*/
+/*  white-space: nowrap;*/
+/*  overflow: hidden;*/
+/*  text-overflow: ellipsis;*/
+/*  justify-content: space-between;*/
+/*}*/
 
-.starFilled:hover {
-cursor: pointer;
-}
+/*.wordInItem {*/
+/*  font-weight: bold;*/
+/*}*/
 
-.starOutline:hover  {
-  cursor: pointer;
-}
+/*.wordInItemType {*/
+/*  margin-left: 15px;*/
+/*  font-style: italic;*/
+/*}*/
+
+/*.wordMeaning {*/
+/*  margin-left: 15px;*/
+/*  width: 50%;*/
+/*  overflow: hidden;*/
+/*  text-overflow: ellipsis;*/
+/*}*/
+
+/*.starContainer {*/
+/*  display: flex;*/
+/*  justify-content: flex-end;*/
+/*}*/
+
+/*.starFilled {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: flex-end;*/
+/*  font-size: 1.5rem;*/
+/*  color: #00a3ff;*/
+/*}*/
+
+/*.starOutline {*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: flex-end;*/
+/*  font-size: 1.5rem;*/
+/*  color: grey;*/
+/*}*/
+
+/*.starFilled:hover {*/
+/*  cursor: pointer;*/
+/*}*/
+
+/*.starOutline:hover {*/
+/*  cursor: pointer;*/
+/*}*/
 
