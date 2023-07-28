@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@reduxjs/toolkit": ["node_modules/@reduxjs/toolkit"]
+    },
     "target": "es5",
     "lib": [
       "dom",

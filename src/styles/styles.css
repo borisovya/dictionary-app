@@ -44,13 +44,7 @@ body {
   background-color: lightgrey;
 }
 
-.items-container {
-  flex: 8;
-  min-width: 200px;
-  height: 40vh;
-  background-color: grey;
-  margin-left: 10px;
-}
+
 
 .header-title {
   padding: 40px;
@@ -67,6 +61,11 @@ body {
   color: white
 }
 
+.activeLink {
+  text-decoration: underline;
+  color: #ff0000;
+}
+
 .search-input {
   margin: 10px auto 0;
   display: flex;
@@ -78,14 +77,81 @@ body {
   outline: none;
   background-color: #fff;
   background-image: url('../asseds/magnifyingGlass.png');
-  background-position: right 15px center;; /* Выравнивание иконки по центру по вертикали и справа по горизонтали */
+  background-position: right 15px center;;
   background-repeat: no-repeat;
-  background-size: 20px 20px; /* Установите размеры иконки, чтобы она не была слишком большой */
-  padding-right: 30px; /* Добавление дополнительного отступа справа, чтобы иконка не перекрывала текст в инпуте */
+  background-size: 20px 20px;
+  padding-right: 30px;
 }
 
 .search-input::placeholder {
   color: #999; /* Цвет текста внутри инпута */
 }
 
+.items-container {
+  display: flex;
+  flex-direction: column;
+  flex: 8;
+  min-width: 200px;
+  height: max-content;
+  background-color: lightgrey;
+  margin-left: 10px;
+}
+
+.wordItem {
+  height: 20px;
+  background-color: white;
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  justify-content: space-between;
+}
+
+.wordInItem {
+  font-weight: bold;
+}
+
+.wordInItemType {
+  margin-left: 15px;
+  font-style: italic;
+}
+
+.wordMeaning {
+  margin-left: 15px;
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.starContainer{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.starFilled {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+  color: #00a3ff;
+}
+
+.starOutline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+  color: grey;
+}
+
+.starFilled:hover {
+cursor: pointer;
+}
+
+.starOutline:hover  {
+  cursor: pointer;
+}
 
