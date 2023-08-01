@@ -58,11 +58,13 @@ const Home = () => {
         return () => {
           clearTimeout(timeoutId);
         };
-      } else { setItems([])}
+      } else {
+        setItems([])
+      }
 
     }, [word]);
 
-  console.log(favorites);
+
     return (
       <div className="container w-full mt-10 h-1/6 flex justify-between ">
 

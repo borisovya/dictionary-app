@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 interface FavoritesState {
   data: any[];
@@ -27,8 +28,7 @@ const favoritesSlice = createSlice({
       state.ids = Array.isArray(action.payload) ? action.payload.map(el => el.meta.id) : []
     },
     addToFavorites(state, action: PayloadAction<any>) {
-
-      if (!state.data.includes(action.payload)) {
+      if (state.data && !state.data.includes(action.payload)) {
         state.data.push(action.payload);
         state.ids.push(action.payload.meta.id);
       }
@@ -36,7 +36,7 @@ const favoritesSlice = createSlice({
     removeFromFavorites(state, action: PayloadAction<any>) {
       state.data = state.data.filter((item) => item.meta.id !== action.payload.meta.id);
       state.ids = state.ids.filter((id) => id !== action.payload.meta.id);
-      console.log(state.data);
+      console.log('item removed', state.data);
     },
     searchFromFavorites(state, action: PayloadAction<string>) {
       state.filteredData = state.data.filter((item) => item.meta.id.split().join('').includes(action.payload));
@@ -62,5 +62,8 @@ export const {
   toggleVerb,
   setData
 } = favoritesSlice.actions;
+
+export const selectFavoritesData = (state: RootState) => state.favorites.data;
+export const selectFilteredData = (state: RootState) => state.favorites.filteredData;
 
 export default favoritesSlice.reducer;

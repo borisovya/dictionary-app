@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import favoritesReducer from './reducer/favoritesSlice';
+import paginationReducer from './reducer/paginationSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 export const store = configureStore({
   reducer: {
-    favorites: favoritesReducer
+    favorites: favoritesReducer,
+    pagination: paginationReducer
   }
 })
 
