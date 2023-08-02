@@ -1,20 +1,22 @@
-import React, {useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from 'src/store/store';
 import {setCurrentPage, setItemsPerPage} from '../store/reducer/paginationSlice';
 import {setData} from '../store/reducer/favoritesSlice';
+import {DictionaryEntry} from '../types/wordDetails';
 
 type PaginatorProps = {
-  onclickHandlerRemove: (item: any) => void
+  onclickHandlerRemove: (item: DictionaryEntry) => void
   isAbleToSetSessionStorage: boolean
-  onItemClickHandler: ()=>void
+  onItemClickHandler: () => void
 }
 const Paginator = ({onclickHandlerRemove, isAbleToSetSessionStorage, onItemClickHandler}: PaginatorProps) => {
   const dispatch = useDispatch();
   const items = useAppSelector((state) => state.favorites.data);
-  const { currentPage, itemsPerPage } = useAppSelector((state) => state.pagination);
-
-  const totalPages = items ? Math.ceil(items.length / itemsPerPage) : 0;
+  const filteredData = useAppSelector((state) => state.favorites.filteredData);
+  const filters = useAppSelector((state) => state.favorites.filters);
+  const {currentPage, itemsPerPage} = useAppSelector((state) => state.pagination);
+  const [totalPages, setTotalPages] = useState(0)
 
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
@@ -23,7 +25,11 @@ const Paginator = ({onclickHandlerRemove, isAbleToSetSessionStorage, onItemClick
   const [sessionStorageUpdated, setSessionStorageUpdated] = useState(false);
 
   const getCurrentPageItems = () => {
-    return items.slice(startIdx, endIdx);
+    if (Object.keys(filters).length > 0 && filteredData) {
+      return filteredData.slice(startIdx, endIdx);
+    }
+    else
+      return items.slice(startIdx, endIdx);
   };
 
   const handlePageChange = (pageNumber: number) => {
@@ -73,6 +79,16 @@ const Paginator = ({onclickHandlerRemove, isAbleToSetSessionStorage, onItemClick
     }
   }, [currentPage, draggedItems, isAbleToSetSessionStorage, sessionStorageUpdated]);
 
+  useEffect(() => {
+    dispatch(setCurrentPage(1));
+  }, [filters, dispatch]);
+
+  useEffect(() => {
+    if (Object.keys(filters).length > 0 && filteredData) {
+      setTotalPages(Math.ceil(filteredData.length / itemsPerPage))
+    }
+    else setTotalPages(Math.ceil(items.length / itemsPerPage))
+  }, [filters]);
 
   if (!Array.isArray(items)) {
     return null;

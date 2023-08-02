@@ -1,55 +1,62 @@
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../store/store';
-import {
-  removeFromFavorites,
-  setData,
-  toggleAdjective,
-  toggleNoun,
-  toggleVerb,
-} from '../store/reducer/favoritesSlice';
+import {removeFromFavorites, setData, setFilters,} from '../store/reducer/favoritesSlice';
 import Paginator from './Paginator';
-import { useNavigate} from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import {DictionaryEntry} from '../types/wordDetails';
 
 const StarredWords = () => {
   const [word, setWord] = useState<string>('');
   const favorites = useAppSelector((state) => state.favorites.data);
   const [itemToRemove, setItemToRemove] = useState<any>(null);
   const [isAbleToSetSessionStorage, setIsAbleToSetSessionStorage] = useState<boolean>(false);
-  const isAdjectiveChecked = useAppSelector((state) => state.favorites.isAdjectiveChecked);
-  const isNounChecked = useAppSelector((state) => state.favorites.isNounChecked);
-  const isVerbChecked = useAppSelector((state) => state.favorites.isVerbChecked);
+  const [isAdjectiveChecked, setIsAdjectiveChecked] = useState(false);
+  const [isNounChecked, setIsNounChecked] = useState(false);
+  const [isVerbChecked, setIsVerbChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams();
-
-  const onclickHandlerRemove = (str: string) => {
+  const [searchParams] = useSearchParams();
+  const onclickHandlerRemove = (item: DictionaryEntry) => {
     onItemClickHandler();
-    setItemToRemove(str);
-    dispatch(removeFromFavorites(str));
+    setItemToRemove(item);
+    dispatch(removeFromFavorites(item));
   };
 
   const onItemClickHandler = () => {
     setIsAbleToSetSessionStorage(true);
   };
 
-  const setCheckBoxParams = () => {
-
+  const updateParamsInURL = () => {
     isAdjectiveChecked ? queryParams.set('adjective', isAdjectiveChecked.toString()) : queryParams.delete('adjective');
     isNounChecked ? queryParams.set('noun', isNounChecked.toString()) : queryParams.delete('noun');
     isVerbChecked ? queryParams.set('verb', isVerbChecked.toString()) : queryParams.delete('verb');
 
-    navigate(`?${queryParams.toString()}`);
-  };
+    word ? queryParams.set('searchByWord', word) : queryParams.delete('searchByWord');
 
-  const setSearchWord = () => {
-    word ? queryParams.set('searchByWord', word) : queryParams.delete('searchByWord')
+    navigate(`?${queryParams.toString()}`);
+
   };
 
   useEffect(() => {
-      setSearchWord()
-      setCheckBoxParams();
+    setLoading(true);
+
+    const timeoutId = setTimeout(() => {
+      updateParamsInURL();
+      setLoading(false);
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+
   }, [isAdjectiveChecked, isNounChecked, isVerbChecked, word]);
+
+  useEffect(() => {
+    dispatch(setFilters(Object.fromEntries(searchParams)));
+  }, [searchParams]);
 
   useEffect(() => {
     if (isAbleToSetSessionStorage && itemToRemove) {
@@ -64,7 +71,6 @@ const StarredWords = () => {
     sessionStorage.getItem('myFavoriteWordsData') && dispatch(
       setData(JSON.parse(sessionStorage.getItem('myFavoriteWordsData') as any)));
   }, []);
-
 
   return (
     <div className="container w-full mt-10 h-1/6 flex justify-between ">
@@ -81,8 +87,8 @@ const StarredWords = () => {
             <input className="mr-2"
                    type="checkbox"
                    checked={isAdjectiveChecked}
-                   onChange={() => {
-                     dispatch(toggleAdjective());
+                   onChange={(e) => {
+                     setIsAdjectiveChecked(e.currentTarget.checked);
                    }}/>
             adjective
           </label>
@@ -90,8 +96,8 @@ const StarredWords = () => {
             <input className="mr-2"
                    type="checkbox"
                    checked={isNounChecked}
-                   onChange={() => {
-                     dispatch(toggleNoun());
+                   onChange={(e) => {
+                     setIsNounChecked(e.currentTarget.checked);
                    }}/>
             noun
           </label>
@@ -100,8 +106,8 @@ const StarredWords = () => {
               className="mr-2"
               type="checkbox"
               checked={isVerbChecked}
-              onChange={() => {
-                dispatch(toggleVerb());
+              onChange={(e) => {
+                setIsVerbChecked(e.currentTarget.checked);
               }}/>
             verb
           </label>
@@ -109,14 +115,18 @@ const StarredWords = () => {
 
       </div>
 
-      <div className=" relative w-2/4 ml-15 flex-grow flex flex-col h-max">
-        <Paginator
-          onclickHandlerRemove={onclickHandlerRemove}
-          isAbleToSetSessionStorage={isAbleToSetSessionStorage}
-          onItemClickHandler={onItemClickHandler}
-        />
-      </div>
-
+      {loading
+        ? <div className="flex mt-10 items-center justify-center w-2/4">
+          <div className="animate-spin rounded-full h-14 w-14 border-t-4 border-blue-500"></div>
+        </div>
+        : <div className=" relative w-2/4 ml-15 flex-grow flex flex-col h-max">
+          <Paginator
+            onclickHandlerRemove={(item: DictionaryEntry) => onclickHandlerRemove(item)}
+            isAbleToSetSessionStorage={isAbleToSetSessionStorage}
+            onItemClickHandler={onItemClickHandler}
+          />
+        </div>
+      }
 
     </div>
   );

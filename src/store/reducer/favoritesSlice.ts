@@ -1,54 +1,69 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import {DictionaryEntry} from '../../types/wordDetails';
+
+type  Filters = {
+  adjective: string
+  noun: string
+  verb: string
+  searchByWord: string
+}
 
 interface FavoritesState {
-  data: any[];
+  data: DictionaryEntry[];
   ids: string[]
-  filteredData: any[],
-  isAdjectiveChecked: boolean
-  isNounChecked: boolean
-  isVerbChecked: boolean
+  filteredData: DictionaryEntry[],
+  filters: Partial<Filters>
 }
 
 const initialState: FavoritesState = {
   data: [],
   ids: [],
   filteredData: [],
-  isAdjectiveChecked: false,
-  isNounChecked: false,
-  isVerbChecked: false,
+  filters: {}
+};
+
+const applyFilters = (data: DictionaryEntry[], filters: Partial<Filters> | null): DictionaryEntry[] => {
+  if (!filters || Object.keys(filters).length === 0) {
+    return data;
+  }
+
+  const {adjective, noun, verb, searchByWord} = filters;
+  const filteredData: DictionaryEntry[] = data.filter((el) => {
+    const matchesAdjective = !adjective || el.fl === 'adjective';
+    const matchesNoun = !noun || el.fl === 'noun';
+    const matchesVerb = !verb || el.fl === 'verb';
+
+    const matchesSearchWord =
+      !searchByWord ||
+      el.hwi.hw.toLowerCase().includes(searchByWord.toLowerCase());
+
+    return matchesAdjective && matchesNoun && matchesVerb && matchesSearchWord;
+  });
+
+  return filteredData;
 };
 
 const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
-    setData: (state, action: PayloadAction<any[]>) => {
+    setData: (state, action: PayloadAction<DictionaryEntry[]>) => {
       state.data = action.payload;
-      state.ids = Array.isArray(action.payload) ? action.payload.map(el => el.meta.id) : []
+      state.ids = Array.isArray(action.payload) ? action.payload.map(el => el.meta.id) : [];
     },
-    addToFavorites(state, action: PayloadAction<any>) {
+    addToFavorites(state, action: PayloadAction<DictionaryEntry>) {
       if (state.data && !state.data.includes(action.payload)) {
         state.data.push(action.payload);
         state.ids.push(action.payload.meta.id);
       }
     },
-    removeFromFavorites(state, action: PayloadAction<any>) {
+    removeFromFavorites(state, action: PayloadAction<DictionaryEntry>) {
       state.data = state.data.filter((item) => item.meta.id !== action.payload.meta.id);
       state.ids = state.ids.filter((id) => id !== action.payload.meta.id);
-      console.log('item removed', state.data);
     },
-    searchFromFavorites(state, action: PayloadAction<string>) {
-      state.filteredData = state.data.filter((item) => item.meta.id.split().join('').includes(action.payload));
-    },
-    toggleAdjective(state) {
-      state.isAdjectiveChecked = !state.isAdjectiveChecked;
-    },
-    toggleNoun(state) {
-      state.isNounChecked = !state.isNounChecked;
-    },
-    toggleVerb(state) {
-      state.isVerbChecked = !state.isVerbChecked;
+    setFilters(state, action: PayloadAction<Partial<Filters>>) {
+      state.filters = action.payload;
+      state.filteredData = applyFilters(state.data, action.payload);
     },
   },
 });
@@ -56,14 +71,8 @@ const favoritesSlice = createSlice({
 export const {
   addToFavorites,
   removeFromFavorites,
-  searchFromFavorites,
-  toggleAdjective,
-  toggleNoun,
-  toggleVerb,
-  setData
+  setData,
+  setFilters
 } = favoritesSlice.actions;
-
-export const selectFavoritesData = (state: RootState) => state.favorites.data;
-export const selectFilteredData = (state: RootState) => state.favorites.filteredData;
 
 export default favoritesSlice.reducer;

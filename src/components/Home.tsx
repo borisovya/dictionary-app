@@ -2,24 +2,25 @@ import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from 'src/store/store';
 import {wordsService} from '../services/wordsService';
 import {addToFavorites, removeFromFavorites, setData} from '../store/reducer/favoritesSlice';
+import {DictionaryEntry} from '../types/wordDetails';
 
 const Home = () => {
     const [word, setWord] = useState<string>('');
     const [expandedItemId, setExpandedItemId] = useState<string>('');
-    const [items, setItems] = useState<any[] | null>(null);
+    const [items, setItems] = useState<DictionaryEntry[] | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const favorites = useAppSelector(state => state.favorites.data);
 
     const ids = useAppSelector(state => state.favorites.ids);
     const dispatch = useAppDispatch();
 
-  const onclickHandler = (str: string) => {
-    dispatch(addToFavorites(str));
-  };
+    const onclickHandler = (item: DictionaryEntry) => {
+      dispatch(addToFavorites(item));
+    };
 
-  const onclickHandlerRemove = (str: string) => {
-    dispatch(removeFromFavorites(str));
-  };
+    const onclickHandlerRemove = (item: DictionaryEntry) => {
+      dispatch(removeFromFavorites(item));
+    };
 
     const onItemClickHandler = (itemId: string) => {
       if (expandedItemId === itemId) {
@@ -30,13 +31,13 @@ const Home = () => {
       }
     };
 
-  useEffect(() => {
-    word && sessionStorage.setItem('myFavoriteWordsData', JSON.stringify(favorites));
-  }, [favorites]);
-
+    useEffect(() => {
+      word && sessionStorage.setItem('myFavoriteWordsData', JSON.stringify(favorites));
+    }, [favorites]);
 
     useEffect(() => {
-      JSON.parse(sessionStorage.getItem('myFavoriteWordsData') as any) && dispatch(setData(JSON.parse(sessionStorage.getItem('myFavoriteWordsData') as any)))
+      JSON.parse(sessionStorage.getItem('myFavoriteWordsData') as any) && dispatch(
+        setData(JSON.parse(sessionStorage.getItem('myFavoriteWordsData') as any)));
 
       if (word) {
         setLoading(true);
@@ -58,12 +59,12 @@ const Home = () => {
         return () => {
           clearTimeout(timeoutId);
         };
-      } else {
-        setItems([])
+      }
+      else {
+        setItems([]);
       }
 
     }, [word]);
-
 
     return (
       <div className="container w-full mt-10 h-1/6 flex justify-between ">
@@ -84,13 +85,13 @@ const Home = () => {
             <div className="animate-spin rounded-full h-14 w-14 border-t-4 border-blue-500"></div>
           </div>
 
-          :<div className=" relative w-2/4 ml-15 flex-grow flex flex-col h-max">
+          : <div className=" relative w-2/4 ml-15 flex-grow flex flex-col h-max">
             {items && items.length > 0 && items[0].meta
               ? items.map((i) => {
 
-                return <div className="flex flex-col z-10">
+                return <div className="flex flex-col z-10" key={i.meta.id}>
                   <div className="flex bg-blue-50 h-10 mb-5 justify-between items-center ml-5 cursor-pointer"
-                       key={i.meta.uuid}
+                       key={i.meta.id}
                        onClick={() => onItemClickHandler(i.meta.id)}>
                     <div className="flex font-bold w-2/6 ml-2">{i.hwi?.hw ?? '-'}</div>
                     <div className="flex italic w-2/6 mr-4">{i.fl ?? '-'}</div>
@@ -99,13 +100,14 @@ const Home = () => {
                       {!ids.includes(i.meta.id)
                         ? <div className="flex ml-2 mr-4 cursor-pointer text-gray-400"
                                onClick={(e) => {
-                                 e.stopPropagation()
-                                 onclickHandler(i)}
+                                 e.stopPropagation();
+                                 onclickHandler(i);
+                               }
                                }>&#9733;</div>
                         : <div className="flex ml-2 mr-4 cursor-pointer text-blue-400"
                                onClick={(e) => {
-                                 e.stopPropagation()
-                                 onclickHandlerRemove(i)
+                                 e.stopPropagation();
+                                 onclickHandlerRemove(i);
                                }}>&#9733;</div>
                         ?? null}
                     </div>
@@ -115,7 +117,7 @@ const Home = () => {
                     <div className="flex flex-col bg-blue-100 p-2 justify-between items-start ml-5 mb-5 mt-[-20px] z-20">
                       <div>Definitions:</div>
                       {i.shortdef.map((definition: string) => {
-                        return  <div className='mt-2'>- {definition}</div>
+                        return <div className="mt-2">- {definition}</div>;
                       })}
                     </div>
                   )}
@@ -126,7 +128,6 @@ const Home = () => {
                 <div className="flex bg-blue-50 h-10 mb-5 justify-between items-center ml-5 pl-5"> Поиск не дал
                   результатов </div> : null)
             }
-
           </div>
         }
 
