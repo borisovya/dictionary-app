@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from 'src/store/store';
-import {setCurrentPage, setItemsPerPage} from '../store/reducer/paginationSlice';
+import {setCurrentPage} from '../store/reducer/paginationSlice';
 import {setData} from '../store/reducer/favoritesSlice';
 import {DictionaryEntry} from '../types/wordDetails';
 
@@ -88,7 +88,7 @@ const Paginator = ({onclickHandlerRemove, isAbleToSetSessionStorage, onItemClick
       setTotalPages(Math.ceil(filteredData.length / itemsPerPage))
     }
     else setTotalPages(Math.ceil(items.length / itemsPerPage))
-  }, [filters]);
+  }, [filters, onclickHandlerRemove]);
 
   if (!Array.isArray(items)) {
     return null;
@@ -132,19 +132,19 @@ const Paginator = ({onclickHandlerRemove, isAbleToSetSessionStorage, onItemClick
           ))}
         </div>
 
-        {Array.isArray(items) && items.length > 0 && <div className="fllex ml-5">
-          <select
-              value={itemsPerPage}
-              onChange={(e) => {
-                dispatch(setCurrentPage(1));
-                dispatch(setItemsPerPage(Number(e.target.value)));
-              }}>
+        {/*{Array.isArray(items) && items.length > 0 && <div className="fllex ml-5">*/}
+        {/*  <select*/}
+        {/*      value={itemsPerPage}*/}
+        {/*      onChange={(e) => {*/}
+        {/*        dispatch(setCurrentPage(1));*/}
+        {/*        dispatch(setItemsPerPage(Number(e.target.value)));*/}
+        {/*      }}>*/}
 
-            <option value={5}>5</option>
-            <option value={10}>10</option>
+        {/*    <option value={5}>5</option>*/}
+        {/*    <option value={10}>10</option>*/}
 
-          </select>
-        </div>}
+        {/*  </select>*/}
+        {/*</div>}*/}
       </div>
 
     </div>

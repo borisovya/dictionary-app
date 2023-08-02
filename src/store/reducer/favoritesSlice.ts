@@ -28,20 +28,38 @@ const applyFilters = (data: DictionaryEntry[], filters: Partial<Filters> | null)
   }
 
   const {adjective, noun, verb, searchByWord} = filters;
-  const filteredData: DictionaryEntry[] = data.filter((el) => {
-    const matchesAdjective = !adjective || el.fl === 'adjective';
-    const matchesNoun = !noun || el.fl === 'noun';
-    const matchesVerb = !verb || el.fl === 'verb';
 
-    const matchesSearchWord =
-      !searchByWord ||
-      el.hwi.hw.toLowerCase().includes(searchByWord.toLowerCase());
+  if (searchByWord) {
+    let filteredData: DictionaryEntry[] = data.filter(
+      el => el.hwi.hw.toLowerCase().includes(searchByWord.toLowerCase()));
 
-    return matchesAdjective && matchesNoun && matchesVerb && matchesSearchWord;
-  });
+    if (adjective) {
+      filteredData = filteredData.filter(el => el.fl === 'adjective');
+    }
+    if (noun) {
+      filteredData = filteredData.filter(el => el.fl === 'noun');
+    }
+    if (verb) {
+      filteredData = filteredData.filter(el => el.fl === 'verb');
+    }
 
-  return filteredData;
+    return filteredData;
+  }
+  else {
+    let filteredData: DictionaryEntry[] = [];
+
+    const matchesAdjective = adjective && data.filter(el => el.fl === 'adjective');
+    const matchesNoun = noun && data.filter(el => el.fl === 'noun');
+    const matchesVerb = verb && data.filter(el => el.fl === 'verb');
+
+    matchesAdjective && filteredData.push(...matchesAdjective);
+    matchesNoun && filteredData.push(...matchesNoun);
+    matchesVerb && filteredData.push(...matchesVerb);
+
+    return filteredData;
+  }
 };
+
 
 const favoritesSlice = createSlice({
   name: 'favorites',

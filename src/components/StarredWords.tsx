@@ -63,7 +63,6 @@ const StarredWords = () => {
       dispatch(removeFromFavorites(itemToRemove));
       setItemToRemove(null);
       sessionStorage.setItem('myFavoriteWordsData', JSON.stringify(favorites));
-      console.log(JSON.parse(sessionStorage.getItem('myFavoriteWordsData') as any));
     }
   }, [isAbleToSetSessionStorage, itemToRemove]);
 
